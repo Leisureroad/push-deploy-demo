@@ -15,5 +15,5 @@ spec:
         app: nginx
     spec:
       containers:
-      - image: ${_IMAGE_TAG} 
+      - image: IMAGE_TAG 
         name: nginx
