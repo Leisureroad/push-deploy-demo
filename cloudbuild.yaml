@@ -17,7 +17,7 @@ steps:
     - |
       git clone https://github.com/Leisureroad/push-deploy-demo.git && cd push-deploy-demo
       gcloud container clusters get-credentials l4-demo --region us-central1 --project flius-vpc-2
-      sed -i'' -e  "s/IMAGE_TAG/${_IMAGE_TAG}/g" deployment.yaml 
+      sed -i 's/IMAGE_TAG/'"${_IMAGE_TAG}"'/g' deployment.yaml
       gcloud beta deploy releases create nginx-${BUILD_ID} \
       --delivery-pipeline=nginx \
       --region=us-central1 \
