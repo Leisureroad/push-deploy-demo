@@ -15,5 +15,5 @@ spec:
         app: nginx
     spec:
       containers:
-      - image: us-central1-docker.pkg.dev/flius-vpc-2/sync-image-repo/nginx:v1.0 
+      - image: ${_IMAGE_TAG} 
         name: nginx

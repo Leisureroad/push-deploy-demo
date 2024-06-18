@@ -9,14 +9,16 @@ steps:
     - echo
     - '${_IMAGE_TAG} ${_ACTION}'
 
-- name: gcr.io/google.com/cloudsdktool/cloud-sdk
+- name: us-central1-docker.pkg.dev/flius-vpc-2/sync-image-repo/builder 
   id: "cloud-deploy"
   entrypoint: bash
   args:
     - '-c'
-    - >
-      gcloud beta deploy releases create nginx-0001
-      --delivery-pipeline=nginx
-      --region=us-central1
-      --images=nginx-image=${_IMAGE_TAG}
-
+    - |
+      git clone https://github.com/Leisureroad/push-deploy-demo.git && cd push-deploy-demo
+      gcloud container clusters get-credentials l4-demo --region us-central1 --project flius-vpc-2
+      gcloud beta deploy releases create nginx-0001 \
+      --delivery-pipeline=nginx \
+      --region=us-central1 \
+      --images=nginx-image=${_IMAGE_TAG} \
+      --from-k8s-manifest deployment.yaml
