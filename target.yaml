@@ -1,0 +1,12 @@
+apiVersion: deploy.cloud.google.com/v1beta1
+kind: Target
+metadata:
+  name: prod
+description: prod cluster
+requireApproval: true
+gke:
+  cluster: projects/flius-vpc-2/locations/us-central1/clusters/l4-demo
+executionConfigs:
+- usages:
+  - RENDER
+  - DEPLOY

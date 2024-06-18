@@ -1,0 +1,22 @@
+tags:
+  - nginx-deploy
+substitutions:
+  _PROJECT_ID: ${PROJECT_ID}
+
+steps:
+- name: ubuntu
+  args:
+    - echo
+    - '${_IMAGE_TAG} ${_ACTION}'
+
+- name: gcr.io/google.com/cloudsdktool/cloud-sdk
+  id: "cloud-deploy"
+  entrypoint: bash
+  args:
+    - '-c'
+    - >
+      gcloud beta deploy releases create nginx-0001
+      --delivery-pipeline=nginx
+      --region=us-central1
+      --images=nginx-image=${_IMAGE_TAG}
+
