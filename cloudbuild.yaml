@@ -5,6 +5,16 @@ substitutions:
   _REPO: https://mygit-647512629680-git.us-central1.sourcemanager.dev/flius-vpc-2/push-deploy-demo.git
 
 steps:
+- name: gcr.io/cloud-builders/git
+  args:
+    - clone
+    - '${_REPO}'
+- name: gcr.io/cloud-builders/git
+  args:
+    - '-c'
+    - cd push-deploy-demo && cat README.md
+  entrypoint: /bin/sh
+
 - name: ubuntu
   args:
     - echo
@@ -17,8 +27,9 @@ steps:
     - '-c'
     - |
       #git clone https://github.com/Leisureroad/push-deploy-demo.git && cd push-deploy-demo
-      git config --global credential.'https://*.*.sourcemanager.dev'.helper gcloud.sh
-      git clone https://mygit-647512629680-git.us-central1.sourcemanager.dev/flius-vpc-2/push-deploy-demo.git && cd push-deploy-demo
+      #git config --global credential.'https://*.*.sourcemanager.dev'.helper gcloud.sh
+      #git clone https://mygit-647512629680-git.us-central1.sourcemanager.dev/flius-vpc-2/push-deploy-demo.git && cd push-deploy-demo
+      cat README.md
       gcloud container clusters get-credentials l4-demo --region us-central1 --project flius-vpc-2
       sed -i 's|IMAGE_TAG|${_IMAGE_TAG}|g' deployment.yaml
       gcloud beta deploy releases create nginx-${BUILD_ID} \
