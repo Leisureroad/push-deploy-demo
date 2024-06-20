@@ -5,17 +5,6 @@ substitutions:
   _REPO: https://mygit-647512629680-git.us-central1.sourcemanager.dev/flius-vpc-2/push-deploy-demo.git
 
 steps:
-- name: gcr.io/cloud-builders/git
-  args:
-    - clone
-    - '${_REPO}'
-    - .
-- name: gcr.io/cloud-builders/git
-  args:
-    - '-c'
-    - cat README.md
-  entrypoint: /bin/sh
-
 - name: ubuntu
   args:
     - echo
