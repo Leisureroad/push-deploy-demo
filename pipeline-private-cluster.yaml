@@ -1,0 +1,8 @@
+apiVersion: deploy.cloud.google.com/v1beta1
+kind: DeliveryPipeline
+metadata:
+  name: nginx-private-cluster 
+description: nginx delivery pipeline
+serialPipeline:
+ stages:
+ - targetId: prod-cluster

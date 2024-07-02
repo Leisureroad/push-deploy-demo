@@ -1,33 +1,29 @@
-tags:
-  - nginx-deploy
-substitutions:
-  _PROJECT_ID: ${PROJECT_ID}
-  _REPO: https://mygit-647512629680-git.us-central1.sourcemanager.dev/flius-vpc-2/push-deploy-demo.git
-
 steps:
-- name: gcr.io/cloud-builders/git
-  args:
-    - clone
-    - '${_REPO}'
+  - name: ubuntu
+    args:
+      - echo
+      - '${_IMAGE_TAG} ${_ACTION}'
+  - name: us-central1-docker.pkg.dev/flius-vpc-2/sync-image-repo/builder
+    args:
+      - '-c'
+      - | 
+        git clone https://github.com/Leisureroad/push-deploy-demo.git && cd push-deploy-demo
+        gcloud container clusters get-credentials private-cluster-internal-cp \
+        --region us-central1-c --project flius-vpc-2
+        sed -i 's|IMAGE_TAG|${_IMAGE_TAG}|g' deployment.yaml
+        gcloud beta deploy releases create nginx-${BUILD_ID} \
+        --delivery-pipeline=nginx-private-cluster \
+        --region=us-central1 \
+        --images=nginx-image=${_IMAGE_TAG} \
+        --from-k8s-manifest deployment.yaml
+    id: cloud-deploy
+    entrypoint: bash
+options:
+  logging: CLOUD_LOGGING_ONLY
+  pool:
+    name: projects/flius-vpc-2/locations/us-central1/workerPools/private-worker-pool
+substitutions:
+  _PROJECT_ID: '${PROJECT_ID}'
+tags:
+  - nginx-private-cluster-deploy
 
-- name: ubuntu
-  args:
-    - echo
-    - '${_IMAGE_TAG} ${_ACTION}'
-
-- name: us-central1-docker.pkg.dev/flius-vpc-2/sync-image-repo/builder 
-  id: "cloud-deploy"
-  entrypoint: bash
-  args:
-    - '-c'
-    - |
-      #git clone https://github.com/Leisureroad/push-deploy-demo.git && cd push-deploy-demo
-      #git clone https://mygit-647512629680-git.us-central1.sourcemanager.dev/flius-vpc-2/push-deploy-demo.git && cd push-deploy-demo
-      cd push-deploy-demo 
-      gcloud container clusters get-credentials l4-demo --region us-central1 --project flius-vpc-2
-      sed -i 's|IMAGE_TAG|${_IMAGE_TAG}|g' deployment.yaml
-      gcloud beta deploy releases create nginx-${BUILD_ID} \
-      --delivery-pipeline=nginx \
-      --region=us-central1 \
-      --images=nginx-image=${_IMAGE_TAG} \
-      --from-k8s-manifest deployment.yaml

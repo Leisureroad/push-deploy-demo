@@ -1,0 +1,13 @@
+apiVersion: deploy.cloud.google.com/v1beta1
+kind: Target
+metadata:
+  name: prod-cluster
+description: prod private cluster
+requireApproval: true
+gke:
+  cluster: projects/flius-vpc-2/locations/us-central1-c/clusters/private-cluster-internal-cp
+executionConfigs:
+- usages:
+  - RENDER
+  - DEPLOY
+  serviceAccount: byd-build-sa@flius-vpc-2.iam.gserviceaccount.com 
