@@ -6,3 +6,7 @@ description: nginx delivery pipeline
 serialPipeline:
  stages:
  - targetId: prod-cluster
+   profiles: []
+   strategy:
+     standard:
+       verify: true

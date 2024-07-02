@@ -10,4 +10,5 @@ executionConfigs:
 - usages:
   - RENDER
   - DEPLOY
+  - VERIFY
   serviceAccount: byd-build-sa@flius-vpc-2.iam.gserviceaccount.com 

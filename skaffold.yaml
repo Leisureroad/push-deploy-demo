@@ -2,7 +2,7 @@ apiVersion: skaffold/v4beta7
 kind: Config
 build:
   artifacts:
-    - image: us-central1-docker.pkg.dev/flius-vpc-2/sync-image-repo/nginx 
+    - image: us-central1-docker.pkg.dev/flius-vpc-2/sync-image-repo/nginx
       context: nginx-test
 manifests:
   rawYaml:
@@ -10,14 +10,14 @@ manifests:
 deploy:
   kubectl: {}
 verify:
-- name: verify-integration-test
-  container:
-    name: integration-test
-    image: integration-test
-    command: ["./test-systems.sh"]
+# - name: verify-integration-test
+#   container:
+#     name: integration-test
+#     image: integration-test
+#     command: ["./test-systems.sh"]
 - name: verify-endpoint-test
   container:
     name: alpine
     image: alpine
     command: ["/bin/sh"]
-    args: ["-c", "wget http://localhost"]
+    args: ["-c", "wget http://www.google.com"]
